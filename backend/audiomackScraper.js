@@ -7,7 +7,7 @@ export async function scrapeAudiomack(url) {
       const { data } = await axios.get(url);
       const $ = cheerio.load(data);
       const songTitle = $('meta[property="og:title"]').attr('content');
-      const downloadUrl = $('#downloadButton').attr('href'); // Adjust this as per the actual HTML structure
+      const downloadUrl = $('#downloadButton').attr('href');
   
       return { songTitle, downloadUrl };
     } catch (error) {
