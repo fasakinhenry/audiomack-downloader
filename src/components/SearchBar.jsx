@@ -1,32 +1,45 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
-const SearchBar = ({ onSearch }) => {
-  const [url, setUrl] = useState("");
+function SearchBar() {
+  const [link, setLink] = useState("");
+  const [songData, setSongData] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (url) {
-      onSearch(url);
+    try {
+      const response = await axios.post("http://localhost:5000/api/scrape", { url: link });
+      setSongData(response.data);
+    } catch (error) {
+      console.error("Error fetching song data:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center mt-10 space-y-4">
-      <input
-        type="text"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        className="w-full max-w-md p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Enter Audiomack Song URL"
-      />
-      <button
-        type="submit"
-        className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600"
-      >
-        Download Song
-      </button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Paste Audiomack song link"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          className="p-2 border rounded"
+        />
+        <button type="submit" className="ml-2 p-2 bg-blue-500 text-white rounded">
+          Get Song
+        </button>
+      </form>
+
+      {songData && (
+        <div className="mt-4">
+          <h2>{songData.songTitle}</h2>
+          <a href={songData.downloadUrl} className="text-blue-500 underline">
+            Download Song
+          </a>
+        </div>
+      )}
+    </div>
   );
-};
+}
 
 export default SearchBar;
