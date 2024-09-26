@@ -14,4 +14,4 @@ export async function scrapeAudiomack(url) {
       console.error("Error scraping Audiomack:", error);
       return null;
     }
-  }
+}
