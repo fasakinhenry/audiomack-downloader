@@ -7,15 +7,19 @@ function SearchBar() {
 
   // Use environment variable for the backend API URL
   const backendApiUrl = import.meta.env.VITE_BACKEND_API_URL;
+  console.log("Backend API URL:", backendApiUrl)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(backendApiUrl, { url: link });
+      // Ensure there's no trailing slash in the base URL
+      const baseUrl = import.meta.env.VITE_BACKEND_API_URL.replace(/\/$/, "");
+      const response = await axios.post(`${baseUrl}/api/scrape`, { url: link });
+      setSongData(response.data);
     } catch (error) {
       console.error("Error fetching song data:", error);
     }
-  };
+  };    
 
   return (
     <div>
