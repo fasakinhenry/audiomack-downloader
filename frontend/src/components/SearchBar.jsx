@@ -5,11 +5,13 @@ function SearchBar() {
   const [link, setLink] = useState("");
   const [songData, setSongData] = useState(null);
 
+  // Use environment variable for the backend API URL
+  const backendApiUrl = import.meta.env.VITE_BACKEND_API_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/scrape", { url: link });
-      setSongData(response.data);
+      const response = await axios.post(backendApiUrl, { url: link });
     } catch (error) {
       console.error("Error fetching song data:", error);
     }
