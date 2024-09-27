@@ -7,7 +7,6 @@ function SearchBar() {
 
   // Use environment variable for the backend API URL
   const backendApiUrl = import.meta.env.VITE_BACKEND_API_URL;
-  console.log("Backend API URL:", backendApiUrl)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
